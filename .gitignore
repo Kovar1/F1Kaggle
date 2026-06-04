@@ -1,41 +1,40 @@
-# ── Raw competition data (re-download from Kaggle) ──
+# Raw competition data (download from Kaggle into data/)
 /data/train.csv
 /data/test.csv
 /sample_submission.csv
 
-# ── Regenerable heavy artifacts (rebuilt by running notebooks 02–07) ──
-#   Kept OUT of history on purpose: these are large and fully reproducible.
-#   train_features.parquet (~105MB) also exceeds GitHub's 100MB/file limit.
-#   NOTE: `git switch`/`checkout` never touches ignored files on disk, so
-#   reverting notebooks does NOT delete your computed OOF/preds.
+# Regenerable heavy artifacts (rebuilt by running the notebooks)
 /data/*.parquet
 /data/*.npy
 
-# ── Submission outputs (regenerate from the notebooks) ──
+# Submission outputs (regenerate from the notebooks)
 /submission_*.csv
 
-# ── Collection progress metadata (transient) ──
+# Dropped from the showcase
+/07_Neural_Net.ipynb
+
+# Collection progress metadata
 /data/progress.json
 
-# ── Legacy experiments (superseded by the 01–06 pipeline) ──
+# Legacy and side experiments
 /legacy/
-
-# ── Independent experiment notebook + its artifacts (not part of the push) ──
 /blend_v3_pipeline.*
 /data/v3blend_*
-/_build_blend.py
+
+# Scratch build/run tooling
+/_build_*.py
+/_run_*.py
+/_mk_*.py
+/_tmp_*.py
+/_tmp_*.png
+/_nbdump.txt
 *.log
 
-# ── NN scratch build tooling ──
-/_build_nn.py
-/_run_nn.py
-/_nbdump.txt
-
-# ── FastF1 caches (large, regenerable) ──
+# FastF1 caches
 /f1_cache/
 /fastf1_cache/
 
-# ── Tooling / generated junk ──
+# Tooling and generated junk
 __pycache__/
 *.pyc
 catboost_info/

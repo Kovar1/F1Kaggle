@@ -1,0 +1,6 @@
+# Keep text files as LF so notebook and code diffs stay clean across machines.
+*.ipynb text eol=lf
+*.py    text eol=lf
+*.md    text eol=lf
+*.csv   text eol=lf
+*.txt   text eol=lf

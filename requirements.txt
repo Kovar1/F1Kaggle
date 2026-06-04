@@ -1,0 +1,18 @@
+# Core
+numpy>=2.4
+pandas>=2.3
+scipy>=1.17
+scikit-learn>=1.8
+matplotlib>=3.10
+
+# Gradient boosting
+xgboost>=3.2
+lightgbm>=4.6
+catboost>=1.2
+optuna>=4.8
+
+# Parquet IO + running the notebooks
+pyarrow>=24.0
+jupyter
+nbconvert
+ipykernel

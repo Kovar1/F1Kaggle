@@ -3,6 +3,25 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.api.types import is_object_dtype, is_string_dtype
 
+
+def _thin_xticklabels(ax, labels, max_ticks=15):
+    """Label at most max_ticks evenly spaced x ticks. Suppress them entirely
+    when there are too many categories to read (hundreds of drivers, say)."""
+    labels = list(labels)
+    n = len(labels)
+    if n == 0:
+        return
+    if n > 60:
+        ax.set_xticks([])
+        return
+    if n <= max_ticks:
+        idx = np.arange(n)
+    else:
+        idx = np.unique(np.linspace(0, n - 1, max_ticks).astype(int))
+    ax.set_xticks(idx)
+    ax.set_xticklabels([labels[i] for i in idx], rotation=45, ha="right")
+
+
 def plot_features_dual_axis(
     df: pd.DataFrame,
     cols: list[str],
@@ -79,8 +98,7 @@ def plot_features_dual_axis(
             ax1.set_ylabel("Count", color=BAR_COLOR)
             ax1.tick_params(axis="y", colors=BAR_COLOR)
 
-            ax1.set_xticks(xpos)
-            ax1.set_xticklabels(final_order, rotation=45, ha="right")
+            _thin_xticklabels(ax1, final_order)
 
             ax2 = ax1.twinx()
             ax2.plot(xpos, mean_y.values, marker="o", color=LINE_COLOR)
@@ -132,7 +150,7 @@ def plot_features_dual_axis(
                 if pd.api.types.is_integer_dtype(x):
                     tick_labels = unique_vals[tick_idx].astype(int)
                 else:
-                    tick_labels = unique_vals[tick_idx]
+                    tick_labels = [f"{v:.2f}" for v in unique_vals[tick_idx]]
 
                 ax1.set_xticks(tick_idx)
                 ax1.set_xticklabels(
@@ -251,14 +269,13 @@ def plot_train_test_distributions(
             train_counts = train[c].value_counts().reindex(cats, fill_value=0)
             test_counts  = test[c].value_counts().reindex(cats, fill_value=0)
 
-            axes[0].bar(cats, train_counts, alpha=BAR_ALPHA)
-            axes[1].bar(cats, test_counts,  alpha=BAR_ALPHA)
+            xpos = np.arange(len(cats))
+            axes[0].bar(xpos, train_counts.values, alpha=BAR_ALPHA)
+            axes[1].bar(xpos, test_counts.values,  alpha=BAR_ALPHA)
 
             for ax in axes:
                 ax.tick_params(axis="x", labelsize=8)
-                for label in ax.get_xticklabels():
-                    label.set_rotation(45)
-                    label.set_ha("right")
+                _thin_xticklabels(ax, cats)
 
         else:
             # ---------- NUMERIC ----------
